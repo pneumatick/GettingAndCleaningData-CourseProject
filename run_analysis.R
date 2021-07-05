@@ -1,3 +1,7 @@
+library(dplyr)
+library(reshape2)
+library(english)
+
 if (!file.exists("getdata_projectfiles_UCI HAR Dataset.zip")) {
   download.file(url = "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip",
                 destfile = "getdata_projectfiles_UCI HAR Dataset.zip")
@@ -29,13 +33,11 @@ X_train <- cbind(X_train, subject_train)
 features <- read.table("UCI HAR Dataset/features.txt")
 activities <- read.table("UCI HAR Dataset/activity_labels.txt")
 
-# Clean up the features and activities using regular expressions (removing (),
-# forcing lowercase). I felt that doing anything more would make the features
-# look like gibberish, so I left the dashes, commas, and certain parentheses
-# deliberately.
+# Set the features and activities to lowercase,
+# replace underscore with space in activities.
 features <- tolower(features[,2])
-features <- gsub("\\(\\)", "", features)
-activities <- tolower(activities[,2])
+activities <- toupper(activities[,2])
+activities <- gsub("_", " ", activities)
 
 # Apply column names to the test and training data sets.
 colnames(X_test) <- c(features, "activity", "subject")
@@ -43,9 +45,10 @@ colnames(X_train) <- c(features, "activity", "subject")
 
 # Get a list of features relating to the means and standard deviations, as well
 # as the activity and subject columns.
-mean_features <- features[grepl("mean", features)]
-std_features <- features[grepl("std", features)]
-relevant_features <- append(mean_features, c(std_features, "activity", "subject"))
+mean_features <- features[grepl("mean\\(\\)$", features)]
+std_features <- features[grepl("std\\(\\)$", features)]
+relevant_features <- append(mean_features,
+                            c(std_features, "activity", "subject"))
 
 # Replace the activity numbers with their proper names.
 for (i in 1:length(activities)) {
@@ -61,4 +64,26 @@ X_train <- subset(X_train, select = relevant_features)
 X <- rbind(X_test, X_train)
 
 # Order the data by subject in increasing order.
-X <- X[order(X$subject), ]
+X <- arrange(X, subject)
+
+# Clean up the column names by removing parentheses and hyphens.
+clean_features <- gsub("\\(\\)", "", relevant_features)
+clean_features <- gsub("-", "", clean_features)
+colnames(X) <- clean_features
+
+# Create a separate data set with the average of each variable for each subject
+# and each activity.
+averageMelt <- melt(X, id = clean_features[19:20],
+                    measure.vars = clean_features[1:18])
+
+averageSubjectData <- dcast(averageMelt, subject ~ variable, mean)
+averageSubjectData <- as.data.frame(t(averageSubjectData))[2:ncol(averageSubjectData), ]
+subjects <- as.english(unique(X$subject))
+subjects <- sub("-", "", subjects)
+colnames(averageSubjectData) <- subjects
+
+averageActivityData <- dcast(averageMelt, activities ~ variable, mean)
+averageActivityData <- as.data.frame(t(averageActivityData))[2:ncol(averageActivityData), ]
+colnames(averageActivityData) <- tolower(sub(" ", "", activities))
+
+averageData <- cbind(averageSubjectData, averageActivityData)
