@@ -2,22 +2,23 @@ library(dplyr)
 library(reshape2)
 library(english)
 
-if (!file.exists("getdata_projectfiles_UCI HAR Dataset.zip")) {
+# Download the zip if it's not found.
+if (!file.exists("data/getdata_projectfiles_UCI HAR Dataset.zip")) {
   download.file(url = "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip",
-                destfile = "getdata_projectfiles_UCI HAR Dataset.zip")
-  unzip("getdata_projectfiles_UCI HAR Dataset.zip")
+                destfile = "data/getdata_projectfiles_UCI HAR Dataset.zip")
+  unzip("data/getdata_projectfiles_UCI HAR Dataset.zip", exdir = "data/")
 }
 
 # Get test data.
-X_test <- read.table("UCI HAR Dataset/test/X_test.txt", header = TRUE)
-Y_test <- read.table("UCI HAR Dataset/test/y_test.txt", header = TRUE)
-subject_test <- read.table("UCI HAR Dataset/test/subject_test.txt",
+X_test <- read.table("data/UCI HAR Dataset/test/X_test.txt", header = TRUE)
+Y_test <- read.table("data/UCI HAR Dataset/test/y_test.txt", header = TRUE)
+subject_test <- read.table("data/UCI HAR Dataset/test/subject_test.txt",
                            header = TRUE)
 
 # Get training data.
-X_train <- read.table("UCI HAR Dataset/train/X_train.txt", header = TRUE)
-Y_train <- read.table("UCI HAR Dataset/train/y_train.txt", header = TRUE)
-subject_train <- read.table("UCI HAR Dataset/train/subject_train.txt",
+X_train <- read.table("data/UCI HAR Dataset/train/X_train.txt", header = TRUE)
+Y_train <- read.table("data/UCI HAR Dataset/train/y_train.txt", header = TRUE)
+subject_train <- read.table("data/UCI HAR Dataset/train/subject_train.txt",
                             header = TRUE)
 
 # Bind the activity and subject lists as columns to each main data set
@@ -78,6 +79,8 @@ averageMelt <- melt(X, id = clean_features[19:20],
 
 averageSubjectData <- dcast(averageMelt, subject ~ variable, mean)
 averageSubjectData <- as.data.frame(t(averageSubjectData))[2:ncol(averageSubjectData), ]
+
+# Following 3 lines: replacing subject numbers with words.
 subjects <- as.english(unique(X$subject))
 subjects <- sub("-", "", subjects)
 colnames(averageSubjectData) <- subjects
@@ -89,4 +92,4 @@ colnames(averageActivityData) <- tolower(sub(" ", "", activities))
 averageData <- cbind(averageSubjectData, averageActivityData)
 
 # Write the data set to a file
-write.table(averageData, file = "averageOfEachVariable.txt")
+write.table(averageData, file = "data/averageOfEachVariable.txt", row.names = FALSE)
