@@ -87,3 +87,6 @@ averageActivityData <- as.data.frame(t(averageActivityData))[2:ncol(averageActiv
 colnames(averageActivityData) <- tolower(sub(" ", "", activities))
 
 averageData <- cbind(averageSubjectData, averageActivityData)
+
+# Write the data set to a file
+write.table(averageData, file = "averageOfEachVariable.txt")
