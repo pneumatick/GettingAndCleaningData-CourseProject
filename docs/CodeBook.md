@@ -3,7 +3,7 @@
 ## Variables
 
 * subject - Each test subject. There were a total of thirty test subjects, and each is represented by an integer between 1 - 30.
-* activity - Each activity that the test subjects engaged in. The activities were as follows: 
+* activity - Each activity that the test subjects engaged in. Each activity is represented by an integer between 1 - 6, which are defined as follows:  
   1. WALKING - Data collected while the subject walked
   2. WALKING UPSTAIRS - Data collected while the subject walked upstairs
   3. WALKING DOWNSTAIRS - Data collected while the subject walked downstairs
