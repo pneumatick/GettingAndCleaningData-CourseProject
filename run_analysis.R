@@ -40,8 +40,7 @@ X_train <- cbind(X_train, subject_train)
 features <- read.table("UCI HAR Dataset/features.txt")
 activities <- read.table("UCI HAR Dataset/activity_labels.txt")
 
-# Set the features and activities to lowercase,
-# replace underscore with space in activities.
+# Set the features to lowercase.
 features <- tolower(features[,2])
 
 # Apply column names to the test and training data sets.
