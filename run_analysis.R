@@ -5,8 +5,6 @@
 # activity that the test subjects engaged in during the initial data collection.
 
 library(dplyr)
-library(reshape2)
-library(english)
 
 # Download the zip if it's not found.
 if (!file.exists("data/getdata_projectfiles_UCI HAR Dataset.zip")) {
