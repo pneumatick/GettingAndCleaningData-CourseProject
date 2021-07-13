@@ -5,23 +5,23 @@
 **Rows (features):**
 
 1. tbodyaccmagmean - Average time domain signal value for the body linear acceleration magnitude mean
-2. tgravityaccmagmean - 
-3. tbodyaccjerkmagmean - 
-4. tbodygyromagmean - 
-5. tbodygyrojerkmagmean - 
-6. fbodyaccmagmean - 
-7. fbodybodyaccjerkmagmean -  
-8. fbodybodygyromagmean - 
-9. fbodybodygyrojerkmagmean - 
-10. tbodyaccmagstd - 
-11. tgravityaccmagstd - 
-12. tbodyaccjerkmagstd - 
-13. tbodygyromagstd - 
-14. tbodygyrojerkmagstd - 
-15. fbodyaccmagstd - 
-16. fbodybodyaccjerkmagstd - 
-17. fbodybodygyromagstd - 
-18. fbodybodygyrojerkmagstd - 
+2. tgravityaccmagmean - Average time domain signal value for the gravity acceleration magnitude mean
+3. tbodyaccjerkmagmean - Average time domain signal value for the body linear acceleration jerk magnitude mean
+4. tbodygyromagmean - Average time domain signal value for the gyroscope magnitude mean
+5. tbodygyrojerkmagmean - Average time domain signal value for the gyroscope jerk magnitude mean
+6. fbodyaccmagmean - Average frequency domain signal value for the body linear acceleration magnitude mean
+7. fbodybodyaccjerkmagmean -  Average frequency domain signal value for the body linear acceleration jerk magnitude mean
+8. fbodybodygyromagmean - Average frequency domain signal value for the gyroscope magnitude mean 
+9. fbodybodygyrojerkmagmean - Average frequency domain signal value for the gyroscope jerk magnitude mean
+10. tbodyaccmagstd - Average time domain signal value for the body linear acceleration magnitude standard deviation
+11. tgravityaccmagstd - Average time domain signal value for the gravity acceleration magnitude standard deviation
+12. tbodyaccjerkmagstd - Average time domain signal value for the body linear acceleration jerk magnitude standard deviation
+13. tbodygyromagstd - Average time domain signal value for the gyroscope magnitude standard deviation.
+14. tbodygyrojerkmagstd - Average time domain signal value for the gyroscope jerk magnitude standard deviation
+15. fbodyaccmagstd - Average frequency domain signal value for the body linear acceleration magnitude standard deviation
+16. fbodybodyaccjerkmagstd - Average frequency domain signal value for the body linear acceleration jerk magnitude standard deviation
+17. fbodybodygyromagstd - Average frequency domain signal value for the gyroscope magnitude standard deviation
+18. fbodybodygyrojerkmagstd - Average frequency domain signal value for the gyroscope jerk magnitude standard deviation
 
 **Columns (subjects and activities):**
 
