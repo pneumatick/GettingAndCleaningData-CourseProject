@@ -43,8 +43,6 @@ activities <- read.table("UCI HAR Dataset/activity_labels.txt")
 # Set the features and activities to lowercase,
 # replace underscore with space in activities.
 features <- tolower(features[,2])
-activities <- toupper(activities[,2])
-activities <- gsub("_", " ", activities)
 
 # Apply column names to the test and training data sets.
 colnames(X_test) <- c(features, "activity", "subject")
@@ -57,12 +55,6 @@ std_features <- features[grepl("std\\(\\)$", features)]
 relevant_features <- append(mean_features,
                             c(std_features, "activity", "subject"))
 
-# Replace the activity numbers with their proper names.
-for (i in 1:length(activities)) {
-  X_test$activity[X_test$activity == i] <- activities[i]
-  X_train$activity[X_train$activity == i] <- activities[i]
-}
-
 # Subset the test and training data sets to only hold relevant columns.
 X_test <- subset(X_test, select = relevant_features)
 X_train <- subset(X_train, select = relevant_features)
@@ -70,32 +62,13 @@ X_train <- subset(X_train, select = relevant_features)
 # Merge the test and training data sets.
 X <- rbind(X_test, X_train)
 
-# Order the data by subject in increasing order.
-X <- arrange(X, subject)
-
 # Clean up the column names by removing parentheses and hyphens.
 clean_features <- gsub("\\(\\)", "", relevant_features)
 clean_features <- gsub("-", "", clean_features)
 colnames(X) <- clean_features
 
-# Create a separate data set with the average of each variable for each subject
-# and each activity.
-averageMelt <- melt(X, id = clean_features[19:20],
-                    measure.vars = clean_features[1:18])
-
-averageSubjectData <- dcast(averageMelt, subject ~ variable, mean)
-averageSubjectData <- as.data.frame(t(averageSubjectData))[2:ncol(averageSubjectData), ]
-
-# Following 3 lines: replacing subject numbers with words.
-subjects <- as.english(unique(X$subject))
-subjects <- sub("-", "", subjects)
-colnames(averageSubjectData) <- subjects
-
-averageActivityData <- dcast(averageMelt, activities ~ variable, mean)
-averageActivityData <- as.data.frame(t(averageActivityData))[2:ncol(averageActivityData), ]
-colnames(averageActivityData) <- tolower(sub(" ", "", activities))
-
-averageData <- cbind(averageSubjectData, averageActivityData)
+# Create an independent, tidy data set 
+averageData <- X %>% group_by(subject, activity) %>% summarise_all(mean)
 
 # Write the data set to a file
 write.table(averageData, file = "data/averageOfEachVariable.txt", row.names = FALSE)
