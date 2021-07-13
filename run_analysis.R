@@ -1,3 +1,9 @@
+# This script extracts mean and standard deviation data from a set of data 
+# collected from the accelerometer and gyroscope of a Samsung Galaxy S phone. 
+# It then writes a separate data set to a file, which is contains the averages
+# of the mean and standard deviation data sorted by each test subject and each 
+# activity that the test subjects engaged in during the initial data collection.
+
 library(dplyr)
 library(reshape2)
 library(english)
